@@ -1,0 +1,77 @@
+# Spring Boot Application Configuration
+spring:
+  application:
+    name: compliance-dashboard
+  
+  # Jackson JSON configuration
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+  
+  # Vault configuration
+  cloud:
+    vault:
+      enabled: true
+      uri: ${VAULT_ADDR:https://vault.example.com}
+      namespace: ${VAULT_NAMESPACE:}
+      authentication: APPROLE
+      app-role:
+        role-id: ${VAULT_ROLE_ID}
+        secret-id: ${VAULT_SECRET_ID}
+      kv:
+        enabled: true
+        backend: secret
+        default-context: compliance
+      connection-timeout: 5000
+      read-timeout: 15000
+
+# Vault configuration path
+vault:
+  uri: ${VAULT_ADDR:https://vault.example.com}
+  namespace: ${VAULT_NAMESPACE:}
+  app-role:
+    role-id: ${VAULT_ROLE_ID}
+    secret-id: ${VAULT_SECRET_ID}
+  config-path: ${VAULT_CONFIG_PATH:compliance/config}
+
+# Server configuration
+server:
+  port: ${PORT:5000}
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+  error:
+    include-message: always
+    include-stacktrace: on_param
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    com.compliance.dashboard: ${LOG_LEVEL:INFO}
+    org.springframework.vault: WARN
+    org.springframework.web: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Management endpoints (Actuator)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+  health:
+    vault:
+      enabled: true
+
+# Application info
+info:
+  app:
+    name: OCS Compliance Dashboard
+    description: Server compliance monitoring across cloud regions
+    version: 1.0.0

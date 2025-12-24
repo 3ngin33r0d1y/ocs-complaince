@@ -1,0 +1,96 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'com.github.node-gradle.node' version '7.0.1'
+}
+
+group = 'com.compliance'
+version = '1.0.0'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Starters
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    
+    // Spring Vault for HashiCorp Vault integration
+    implementation 'org.springframework.vault:spring-vault-core:3.1.0'
+    
+    // WebClient for HTTP requests
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    
+    // Lombok for reducing boilerplate
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    
+    // JSON processing
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    
+    // Logging
+    implementation 'org.slf4j:slf4j-api'
+    
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+}
+
+// Node/Frontend configuration
+node {
+    version = '20.10.0'
+    npmVersion = '10.2.3'
+    download = true
+    workDir = file("${project.buildDir}/nodejs")
+    npmWorkDir = file("${project.buildDir}/npm")
+    nodeProjectDir = file("${project.projectDir}/frontend")
+}
+
+// Task to build frontend (npmInstall is automatically created by node plugin)
+task buildFrontend(type: com.github.gradle.node.npm.task.NpmTask, dependsOn: 'npmInstall') {
+    description = 'Build frontend application'
+    workingDir = file("${project.projectDir}/frontend")
+    args = ['run', 'build']
+}
+
+// Task to copy frontend build to Spring Boot static resources
+task copyFrontend(type: Copy, dependsOn: buildFrontend) {
+    description = 'Copy frontend build to static resources'
+    from "${project.projectDir}/frontend/dist"
+    into "${project.buildDir}/resources/main/static"
+}
+
+// Make processResources depend on copyFrontend
+processResources.dependsOn copyFrontend
+
+// Clean frontend build
+clean {
+    delete "${project.projectDir}/frontend/dist"
+    delete "${project.projectDir}/frontend/node_modules"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// Bootable JAR configuration
+bootJar {
+    archiveFileName = 'compliance-dashboard.jar'
+    mainClass = 'com.compliance.dashboard.ComplianceDashboardApplication'
+}
+
+// Plain JAR not needed
+jar {
+    enabled = false
+}
