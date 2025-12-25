@@ -12,7 +12,7 @@ spring:
   # Vault configuration
   cloud:
     vault:
-      enabled: true
+      enabled: false
       uri: ${VAULT_ADDR:https://vault.example.com}
       namespace: ${VAULT_NAMESPACE:}
       authentication: APPROLE
