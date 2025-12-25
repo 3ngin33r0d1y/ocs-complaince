@@ -93,15 +93,6 @@ Store your application configuration in Vault at the specified path (e.g., `secr
 }
 ```
 
-### Frontend Environment Variables
-
-Create a `.env` file in the `frontend/` directory:
-
-```bash
-# API Configuration
-VITE_API_URL=http://localhost:8080
-```
-
 ## Running the Application
 
 ### Start Backend Server
