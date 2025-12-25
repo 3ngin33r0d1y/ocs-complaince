@@ -4,21 +4,10 @@ A comprehensive web application for monitoring server compliance across multiple
 
 ## Features
 
-### Backend
-- **Vault Integration**: Secure configuration management using HashiCorp Vault with AppRole authentication
-- **Multi-Region Support**: Monitors servers across multiple regions (Paris, North)
-- **RESTful API**: Spring Boot API with CORS support
-- **Compliance Checking**: Validates server images against current ISO week
-- **Retry Logic**: Robust error handling with configurable retries and timeouts
-
-### Frontend
-- **React SPA**: Modern single-page application built with React and Vite
-- **Real-time Dashboard**: KPI cards showing total servers, compliance rates, and statistics
-- **Interactive Charts**: Pie charts and bar charts for visual compliance analysis
-- **Advanced Filtering**: Search, filter by status/region/app, and sort capabilities
-- **Auto-refresh**: Configurable automatic data refresh (1-30 minutes)
-- **Responsive Design**: Mobile-friendly UI with Tailwind CSS
-- **Dark Mode**: Full dark mode support
+- **Spring Boot API** with Vault (AppRole) configuration
+- **Compliance engine** that checks current ISO week images across regions
+- **React dashboard** with charts, filters, and sortable tables
+- **Bundled build**: frontend is baked into the backend JAR
 
 ## Architecture
 
@@ -59,27 +48,10 @@ compliance-dashboard/
 
 ## Installation
 
-### 1. Backend Setup
-
 ```bash
 cd compliance-dashboard
-
-# Configure environment variables
 cp .env.example .env
 # Edit .env with your Vault credentials
-```
-
-### 2. Frontend Setup
-
-```bash
-cd compliance-dashboard/frontend
-
-# Install dependencies
-npm install
-
-# Configure environment variables
-cp .env.example .env
-# Edit .env if needed (default: http://localhost:5000)
 ```
 
 ## Configuration
@@ -95,9 +67,6 @@ VAULT_NAMESPACE=your-namespace
 VAULT_ROLE_ID=your-role-id
 VAULT_SECRET_ID=your-secret-id
 VAULT_CONFIG_PATH=compliance/config
-
-# Server Configuration
-PORT=5000
 
 ```
 
@@ -130,7 +99,7 @@ Create a `.env` file in the `frontend/` directory:
 
 ```bash
 # API Configuration
-VITE_API_URL=http://localhost:5000
+VITE_API_URL=http://localhost:8080
 ```
 
 ## Running the Application
@@ -138,21 +107,20 @@ VITE_API_URL=http://localhost:5000
 ### Start Backend Server
 
 ```bash
-cd compliance-dashboard
 ./gradlew bootRun
 ```
 
-The API will be available at `http://localhost:5000`. The frontend build is bundled into the Spring Boot app when you build the JAR.
-
+The API will be available at `http://localhost:8080`.
 
 ### Start Frontend Development Server
 
 ```bash
-cd compliance-dashboard/frontend
+cd frontend
+npm install
 npm run dev
 ```
 
-The frontend will be available at `http://localhost:3000`
+The frontend will be available at `http://localhost:3000`.
 
 ## API Endpoints
 
@@ -217,50 +185,11 @@ The system classifies servers based on their image build week:
 
 Image names must follow the pattern: `*_YYYY_wWW_*` (e.g., `ocs_dev_RHEL_9_2025_w41_legacy`)
 
-## Development
-
-### Backend Development
-
-```bash
-# Run the Spring Boot app
-./gradlew bootRun
-
-# Run tests (if implemented)
-./gradlew test
-```
-
-### Frontend Development
-
-```bash
-# Development server with hot reload
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Lint code
-npm run lint
-```
-
-## Production Deployment
-
-### Backend
+## Build
 
 ```bash
 ./gradlew bootJar
 java -jar build/libs/compliance-dashboard.jar
-```
-
-### Frontend
-
-```bash
-# Build for production
-npm run build
-
-# Serve the dist/ folder with a web server (nginx, Apache, etc.)
 ```
 
 ## Troubleshooting
@@ -271,7 +200,7 @@ npm run build
 - Ensure network connectivity to Vault server
 
 ### API Connection Issues
-- Verify backend is running on correct port
+- Verify backend is running on correct port (default 8080)
 - Check CORS configuration if accessing from different origin
 - Verify `VITE_API_URL` in frontend `.env`
 
@@ -293,7 +222,3 @@ npm run build
 ## License
 
 [Your License Here]
-
-## Support
-
-For issues and questions, please contact [Your Contact Information]
