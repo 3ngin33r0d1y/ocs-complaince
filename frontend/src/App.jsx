@@ -7,7 +7,7 @@ import Header from './components/Header'
 import LoadingSpinner from './components/LoadingSpinner'
 import ErrorMessage from './components/ErrorMessage'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
 function App() {
   const [complianceData, setComplianceData] = useState(null)
