@@ -50,7 +50,8 @@ logging:
   level:
     root: INFO
     com.compliance.dashboard: ${LOG_LEVEL:INFO}
-    org.springframework.vault: WARN
+    org.springframework.vault: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
     org.springframework.web: WARN
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
