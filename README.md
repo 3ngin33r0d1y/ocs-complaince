@@ -175,4 +175,4 @@ Image names must follow the pattern: `*_YYYY_wWW_*` (e.g., `ocs_dev_RHEL_9_2025_
 
 ## License
 
-[Your License Here]
+DevOps Team Casablanca, AFMO Lions.
