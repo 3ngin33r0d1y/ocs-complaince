@@ -36,15 +36,11 @@ compliance-dashboard/
 
 ## Prerequisites
 
-### Backend
 - Java 17+
 - Access to HashiCorp Vault
 - Valid Vault AppRole credentials
 - Network access to OCS APIs
-
-### Frontend
-- Node.js 18+
-- npm or yarn
+- Node.js 18+ (only needed to build the JAR)
 
 ## Installation
 
@@ -93,25 +89,14 @@ Store your application configuration in Vault at the specified path (e.g., `secr
 }
 ```
 
-## Running the Application
-
-### Start Backend Server
+## Build and Run (Single JAR)
 
 ```bash
-./gradlew bootRun
+./gradlew bootJar
+java -jar build/libs/compliance-dashboard.jar
 ```
 
-The API will be available at `http://localhost:8080`.
-
-### Start Frontend Development Server
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The frontend will be available at `http://localhost:3000`.
+Open `http://localhost:8080` to access the dashboard and API.
 
 ## API Endpoints
 
@@ -144,25 +129,11 @@ Returns aggregated compliance statistics across all apps and regions.
 
 ## Usage
 
-1. **Access the Dashboard**: Open `http://localhost:3000` in your browser
-
+1. **Access the Dashboard**: Open `http://localhost:8080` in your browser
 2. **Select Application**: Use the dropdown in the header to select a specific app or view all apps
-
-3. **View Compliance**: 
-   - Dashboard shows overall statistics
-   - Charts provide visual analysis
-   - Table lists all servers with detailed information
-
-4. **Filter & Search**:
-   - Use the search box to find specific servers or images
-   - Filter by status (compliant/non-compliant)
-   - Filter by region
-   - Sort columns by clicking headers
-
-5. **Auto-refresh**:
-   - Toggle auto-refresh in the header
-   - Select refresh interval (1-30 minutes)
-   - Manual refresh available anytime
+3. **View Compliance**: Dashboard, charts, and server table update automatically
+4. **Filter & Search**: Filter by status/region and search for servers or images
+5. **Auto-refresh**: Toggle refresh and pick the interval
 
 ## Compliance Logic
 
@@ -176,13 +147,6 @@ The system classifies servers based on their image build week:
 
 Image names must follow the pattern: `*_YYYY_wWW_*` (e.g., `ocs_dev_RHEL_9_2025_w41_legacy`)
 
-## Build
-
-```bash
-./gradlew bootJar
-java -jar build/libs/compliance-dashboard.jar
-```
-
 ## Troubleshooting
 
 ### Vault Connection Issues
@@ -191,9 +155,8 @@ java -jar build/libs/compliance-dashboard.jar
 - Ensure network connectivity to Vault server
 
 ### API Connection Issues
-- Verify backend is running on correct port (default 8080)
+- Verify the JAR is running on port 8080
 - Check CORS configuration if accessing from different origin
-- Verify `VITE_API_URL` in frontend `.env`
 
 ### No Data Displayed
 - Check browser console for errors
