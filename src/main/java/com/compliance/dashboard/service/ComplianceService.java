@@ -38,7 +38,6 @@ public class ComplianceService {
      */
     public Map<String, Object> checkAllAppsCompliance(boolean debug) {
         log.info("Checking compliance for all applications");
-        
         Map<String, AppConfig> configs = vaultService.getAllConfigs();
         Map<String, ComplianceResult> results = new HashMap<>();
         
@@ -75,7 +74,6 @@ public class ComplianceService {
      */
     public ComplianceResult checkCompliance(String appName, boolean debug) {
         log.info("Checking compliance for app: {}", appName);
-        
         AppConfig appConfig = vaultService.getAppConfig(appName);
         if (appConfig == null) {
             throw new RuntimeException("App configuration not found: " + appName);

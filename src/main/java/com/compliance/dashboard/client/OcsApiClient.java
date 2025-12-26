@@ -107,13 +107,13 @@ public class OcsApiClient {
      * Build OCS servers detail URL for a region.
      */
     private String buildServersUrl(String region) {
-        return String.format("https://ocs.eu-fr-%s.cloud/v0/servers/detail", region);
+        return String.format("https://ocs.eu-fr-%s.cloud.socgen/v0/servers/detail", region);
     }
 
     /**
      * Build OCS image URL for a region and image ID.
      */
     private String buildImageUrl(String region, String imageId) {
-        return String.format("https://ocs.eu-fr-%s.cloud/v0/images/%s", region, imageId);
+        return String.format("https://ocs.eu-fr-%s.cloud.socgen/v0/images/%s", region, imageId);
     }
 }

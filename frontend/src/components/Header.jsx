@@ -9,7 +9,9 @@ function Header({
   selectedApp,
   availableApps,
   onAppChange,
-  loading 
+  loading,
+  userEmail,
+  onSignOut
 }) {
   const intervalOptions = [
     { value: 60000, label: '1 minute' },
@@ -32,6 +34,21 @@ function Header({
           </div>
           
           <div className="flex flex-wrap items-center gap-3">
+            {userEmail && (
+              <div className="flex items-center gap-3 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+                <span className="hidden sm:inline">Signed in as</span>
+                <span className="font-medium text-gray-900 dark:text-white">{userEmail}</span>
+              </div>
+            )}
+
+            {onSignOut && (
+              <button
+                onClick={onSignOut}
+                className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:text-white"
+              >
+                Sign out
+              </button>
+            )}
             {/* App Selector */}
             <select
               value={selectedApp}
